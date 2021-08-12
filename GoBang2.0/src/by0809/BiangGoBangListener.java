@@ -34,12 +34,15 @@ import java.awt.event.*;
 public class BiangGoBangListener implements MouseListener , ActionListener, MouseMotionListener , BiangGoBangInterface {
     int chessX,chessY;
     Graphics pen;
-    int controlColor;
+    int controlColor,controlBack;
     int countBlack=0, countWhite=0,countSum=0;
     BiangGoBangUI goBangUi;
     JFrame startJf ;
     JFrame winJf;
     int[][] changeLocation =new int[][]{{-1,-1},{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1},{0,-1}};//04 15 26 37
+    User user0 ;
+    User user1 ;
+
 
     public void setGraphics(Graphics pen){
         this.pen = pen;
@@ -58,6 +61,7 @@ public class BiangGoBangListener implements MouseListener , ActionListener, Mous
         int x = e.getX();
         int y = e.getY();
         System.out.println("点击棋盘");
+        controlBack=0;
         if(x>X-SIZE && x<X+SIZE*ROW+SIZE && y>Y-SIZE && y<Y+SIZE*LINE+SIZE ){
             //棋子校正：点中间线归上左
             int baseX = X + ((x - X) / SIZE) * SIZE;
@@ -132,57 +136,91 @@ public class BiangGoBangListener implements MouseListener , ActionListener, Mous
             //步数记录改
         }
         else if(btnStr.equals("撤回")){
-            //goBangUi.paint(pen);
-            if(goBangUi.chessIndex.get(countSum-1).getColor().equals(Color.BLACK))
-                countBlack--;
-            else
-                countWhite--;
-            //棋盘记录改
-//            for(int i=0;i<ROW+1;i++){
-//                for(int j=0;j<LINE+1;j++){
-//                    System.out.print(goBangUi.chesses[i][j]);
-//                }
-//                System.out.println();
-//            }
-//            System.out.println();
+            if(controlBack==1)
+                JOptionPane.showMessageDialog(null,"你已经撤回棋子，不可以再次撤回，请下棋！","这个人企图多次撤回",1);
+            else {
+                controlBack=1;
+                //goBangUi.paint(pen);
+                if (goBangUi.chessIndex.get(countSum - 1).getColor().equals(Color.BLACK))
+                    countBlack--;
+                else
+                    countWhite--;
+                //棋盘记录改
+                //            for(int i=0;i<ROW+1;i++){
+                //                for(int j=0;j<LINE+1;j++){
+                //                    System.out.print(goBangUi.chesses[i][j]);
+                //                }
+                //                System.out.println();
+                //            }
+                //            System.out.println();
 
-            goBangUi.chessIndex.get(countSum-1).setReback(true);
-            System.out.println((goBangUi.chessIndex.get(countSum-1).getChessY()-Y)/SIZE);
-            System.out.println((goBangUi.chessIndex.get(countSum-1).getChessX()-X)/SIZE);
-            goBangUi.chesses[(goBangUi.chessIndex.get(countSum-1).getChessY()-Y)/SIZE][(goBangUi.chessIndex.get(countSum-1).getChessX()-X)/SIZE]=0;
+                goBangUi.chessIndex.get(countSum - 1).setReback(true);
+                System.out.println((goBangUi.chessIndex.get(countSum - 1).getChessY() - Y) / SIZE);
+                System.out.println((goBangUi.chessIndex.get(countSum - 1).getChessX() - X) / SIZE);
+                goBangUi.chesses[(goBangUi.chessIndex.get(countSum - 1).getChessY() - Y) / SIZE][(goBangUi.chessIndex.get(countSum - 1).getChessX() - X) / SIZE] = 0;
 
-//            for(int i=0;i<ROW+1;i++){
-//                for(int j=0;j<LINE+1;j++){
-//                    System.out.print(goBangUi.chesses[i][j]);
-//                }
-//                System.out.println();
-//            }
-            //System.out.println("撤回前:"+goBangUi.chessIndex.size());
+                //            for(int i=0;i<ROW+1;i++){
+                //                for(int j=0;j<LINE+1;j++){
+                //                    System.out.print(goBangUi.chesses[i][j]);
+                //                }
+                //                System.out.println();
+                //            }
+                //System.out.println("撤回前:"+goBangUi.chessIndex.size());
 
-            goBangUi.paint(pen);
-            controlColor=(controlColor+1)%2;
+                goBangUi.paint(pen);
+                controlColor = (controlColor + 1) % 2;
 
-            //原本 paint 方法只是重画棋盘格，棋子的重画在监听器里面实现
-            //步数记录改   如果步数记录不更改就会利于后续回放   但是如果用棋盘扫描时间复杂度会不会很高
-//            goBangUi.chessIndex.remove(goBangUi.chessIndex.size()-1);
-//            System.out.println("撤回后:"+goBangUi.chessIndex.size());
-//            for(int i=0;i<goBangUi.chessIndex.size();i++){
-//                pen.setColor(goBangUi.chessIndex.get(i).getColor());
-//                System.out.println(i);
-//                System.out.println(goBangUi.chessIndex.get(i).getChessX()+"  "+goBangUi.chessIndex.get(i).getChessY());
-//                pen.fillOval(goBangUi.chessIndex.get(i).getChessX()-SIZE/2, goBangUi.chessIndex.get(i).getChessY()-SIZE/2,SIZE,SIZE);
-//            }
+                //原本 paint 方法只是重画棋盘格，棋子的重画在监听器里面实现
+                //步数记录改   如果步数记录不更改就会利于后续回放   但是如果用棋盘扫描时间复杂度会不会很高
+                //            goBangUi.chessIndex.remove(goBangUi.chessIndex.size()-1);
+                //            System.out.println("撤回后:"+goBangUi.chessIndex.size());
+                //            for(int i=0;i<goBangUi.chessIndex.size();i++){
+                //                pen.setColor(goBangUi.chessIndex.get(i).getColor());
+                //                System.out.println(i);
+                //                System.out.println(goBangUi.chessIndex.get(i).getChessX()+"  "+goBangUi.chessIndex.get(i).getChessY());
+                //                pen.fillOval(goBangUi.chessIndex.get(i).getChessX()-SIZE/2, goBangUi.chessIndex.get(i).getChessY()-SIZE/2,SIZE,SIZE);
+                //            }
 
-            //计数板改变
-            pen.setColor(Color.WHITE);
-            pen.fillRect(100,30,500,30);
-            pen.setColor(Color.BLACK);
-            pen.drawString("黑色棋子计数: "+countBlack,150,50);
-            pen.drawString("白色棋子计数: "+countWhite,450,50);
+                //计数板改变
+                pen.setColor(Color.WHITE);
+                pen.fillRect(100, 30, 500, 30);
+                pen.setColor(Color.BLACK);
+                pen.drawString("黑色棋子计数: " + countBlack, 150, 50);
+                pen.drawString("白色棋子计数: " + countWhite, 450, 50);
+            }
 
             //步数记录改
             //goBangUi.chessIndex.remove(goBangUi.chessIndex.size()-1);
         }
+        //保存当前棋盘盘面，
+        else if(btnStr.equals("存档")){
+            user0.setChesses(goBangUi.chesses, goBangUi.chessIndex, countBlack,countWhite,countSum,controlColor,1);
+            user1.setChesses(goBangUi.chesses, goBangUi.chessIndex, countBlack,countWhite,countSum,controlColor,1);
+        }
+        else if(btnStr.equals("帮助")){
+
+        }
+        else if(btnStr.equals("退出游戏")){
+            JOptionPane.showConfirmDialog(null,"确认退出游戏？","退出游戏",JOptionPane.YES_NO_OPTION);
+            if(user0.getConfirmSave()==0) {
+                int res = JOptionPane.showConfirmDialog(null, "没有存档棋局，您缺人要离开吗？", "确认存档提醒", JOptionPane.YES_NO_OPTION);
+                if(res == 0) {
+                    for(int i = 0;i < ROW + 1;i++){
+                        for(int j = 0; j<LINE + 1;j++)
+                            goBangUi.chesses[i][j]=0;
+                    }
+                    countBlack=0;
+                    countWhite=0;
+                    countSum=0;
+                    controlColor=0;
+                    goBangUi.chessIndex.clear();
+                    goBangUi.setVisible(false);
+                    goBangUi.startGame();
+                }
+            }
+        }
+
+
     }
 
     @Override
