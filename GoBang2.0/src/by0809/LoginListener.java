@@ -44,7 +44,6 @@ public class LoginListener implements ActionListener {
         String jTFPasswordStr = jTFPassword.getText();
         if(btnStr.equals("登录")){
             if(jTFUserStr.equals("Stefan") && jTFPasswordStr.equals("0410")){
-
                 loginJf.setVisible(false);
                 goBangUi.startGame();
             }

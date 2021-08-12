@@ -24,8 +24,10 @@ import java.awt.event.ActionListener;
 public class MenuListener implements ActionListener {
 
     BiangGoBangUI goBangUi;
+    BiangGoBangListener mylis;
     JFrame startJf ;
     JFrame winJf;
+    User user0;
 
     public void setGoBangUi(BiangGoBangUI goBangUi) {
         this.goBangUi = goBangUi;
@@ -45,6 +47,19 @@ public class MenuListener implements ActionListener {
 
         }
         else if(btnStr.equals("读档")){
+            if(user0.getConfirmSave()==0){
+                JOptionPane.showMessageDialog(null,"很抱歉，并没有你的存档信息！","根本没找到存档的棋盘",1);
+            }
+            else{
+                JOptionPane.showMessageDialog(null,"欢迎回来！","读取存档成功",1);
+                goBangUi.chesses= user0.chesses;
+                goBangUi.chessIndex = user0.chessIndex;
+                mylis.countBlack = user0.countBlack;
+                mylis.countWhite = user0.countWhite;
+                mylis.countSum = user0.countSum;
+                mylis.controlColor = user0.controlColor;
+                goBangUi.paint(goBangUi.getGraphics());
+            }
 
         }
         else if(btnStr.equals("查看战绩")){

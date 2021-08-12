@@ -42,6 +42,7 @@ public class BiangGoBangUI extends JFrame implements BiangGoBangInterface {
     public WinListener winListener = new WinListener();
     public int[][] chesses = new int[ROW+1][LINE+1];
     public ArrayList<chessShape> chessIndex = new ArrayList<chessShape>(300);
+    public User user0;
 //    public int[] chessIndexX = new int [];
 //    public int[] ChessIndexY = new int [];
 
@@ -82,7 +83,7 @@ public class BiangGoBangUI extends JFrame implements BiangGoBangInterface {
         Dimension dim = new Dimension(downWidth,downWidth);
         downBar.setPreferredSize(dim);
 
-        JButton BeginBtn = new JButton("开始");
+        JButton BeginBtn = new JButton("退出游戏");
         BeginBtn.setBackground(Color.WHITE);
         BeginBtn.setSize(btnWidth,btnHeight);
         downBar.add(BeginBtn);
@@ -107,6 +108,7 @@ public class BiangGoBangUI extends JFrame implements BiangGoBangInterface {
         helpBtn.setSize(btnWidth,btnHeight);
         downBar.add(helpBtn);
 
+        BeginBtn.addActionListener(mylis);
         ClearBtn.addActionListener(mylis);
         backBtn.addActionListener(mylis);
         this.add(downBar,BorderLayout.SOUTH);
@@ -137,6 +139,22 @@ public class BiangGoBangUI extends JFrame implements BiangGoBangInterface {
             g.drawLine(X,Y+i*SIZE,X+SIZE*LINE,Y+i*SIZE);  //y不变，画横线
             g.drawLine(X+i*SIZE,Y,X+i*SIZE,Y+SIZE*ROW);   //x不变，画竖线
         }
+        g.fillOval(X+3*SIZE-3,Y+3*SIZE-3,6,6);
+        g.fillOval(X+3*SIZE-3,Y+8*SIZE-3,6,6);
+        g.fillOval(X+3*SIZE-3,Y+13*SIZE-3,6,6);
+        g.fillOval(X+8*SIZE-3,Y+3*SIZE-3,6,6);
+        g.fillOval(X+8*SIZE-3,Y+8*SIZE-3,6,6);
+        g.fillOval(X+8*SIZE-3,Y+13*SIZE-3,6,6);
+        g.fillOval(X+13*SIZE-3,Y+3*SIZE-3,6,6);
+        g.fillOval(X+13*SIZE-3,Y+8*SIZE-3,6,6);
+        g.fillOval(X+13*SIZE-3,Y+13*SIZE-3,6,6);
+//        for(int i=1;i<=3;i++){
+
+//            for(int j=1;j<=3;j++){
+//                g.fillOval(X+i*4*SIZE-3,Y+j*4*SIZE-3,6,6);
+//            }
+//        }
+        g.fillOval(X+8*SIZE-4,Y+8*SIZE-4,8,8);
         for(int i=0;i<ROW+1;i++){
             for(int j=0;j<LINE+1;j++){
                 if(chesses[i][j]==2){
@@ -216,6 +234,7 @@ public class BiangGoBangUI extends JFrame implements BiangGoBangInterface {
         loginJf.setSize(500,500);
         loginJf.setLayout(null);
         loginJf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        loginJf.setIconImage(new ImageIcon("img/icon2.jpg").getImage());
 
         //FlowLayout fl = new FlowLayout();
         //loginJf.setLayout(fl);
@@ -285,13 +304,17 @@ public class BiangGoBangUI extends JFrame implements BiangGoBangInterface {
 
         JLabel winImgLable = new JLabel(winImg);
         winImgLable.setSize(200,247);
-        winImgLable.setLocation(100,85);
+        winImgLable.setLocation(100,95);
+
+        JLabel countLable = new JLabel("黑子："+mylis.countBlack+"     白子："+mylis.countWhite);
+        countLable.setSize(200,30);
+        countLable.setLocation(145,50);
 
 
         if(winNumber==2) {
             JLabel textLable = new JLabel("恭喜黑方获胜！");
-            textLable.setSize(100, 50);
-            textLable.setLocation(150, 20);
+            textLable.setSize(100, 30);
+            textLable.setLocation(160, 20);
             winJf.add(textLable);
         }
         else{
@@ -319,6 +342,7 @@ public class BiangGoBangUI extends JFrame implements BiangGoBangInterface {
         btn3.setLocation(273,400);
 
         winJf.add(winImgLable);
+        winJf.add(countLable);
         winJf.add(btn1);
         winJf.add(btn2);
         winJf.add(btn3);
@@ -330,8 +354,8 @@ public class BiangGoBangUI extends JFrame implements BiangGoBangInterface {
         winListener.setWinJf(winJf);
         winListener.setMylis(mylis);
 
-        Graphics wpen = winJf.getGraphics();
-        winListener.setGraphics(wpen);
+        //Graphics wpen = winJf.getGraphics();
+        winListener.setGraphics(this.getGraphics());
 
     }
 
